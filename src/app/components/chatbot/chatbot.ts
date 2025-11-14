@@ -1,7 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+
 import { Footer } from '../footer/footer';
 
 interface Message {
@@ -52,8 +52,13 @@ export class Chatbot {
   private readonly SEARCH_MENU_URL = `${this.BASE_URL}/api/searchMenu`;
   private readonly API_URL = `${this.BASE_URL}/api/gemini`;
   private readonly INSTAGRAM_URL = 'https://www.instagram.com/crissigel/';
+  // 🌐 URL del proyecto de reservas (frontend separado)
+private readonly RESERVAS_URL =
+  window.location.hostname.includes('localhost')
+    ? 'https://flynn-reservas.vercel.app' // podés usar también prod para probar en local
+    : 'https://flynn-reservas.vercel.app';
 
-  constructor(private router: Router, private zone: NgZone) {}
+  constructor( private zone: NgZone) {}
 
   // === Inicialización ===
   async ngOnInit() {
@@ -237,9 +242,10 @@ export class Chatbot {
 
   // === Modal ===
   onConfirmReserve() {
-    this.showLimitModal = false;
-    this.router.navigate(['/reservas']);
-  }
+  this.showLimitModal = false;
+  // Redirige al proyecto de reservas
+  window.location.href = this.RESERVAS_URL;
+}
 
   onDeclineReserve() {
     this.showLimitModal = false;
